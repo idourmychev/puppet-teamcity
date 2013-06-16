@@ -1,8 +1,8 @@
 define manage_plugin($data_directory, $plugin = $title, $restart = false) {
 
+  validate_re($plugin,['^(.)+$'], 'Plugin name must not be empty')
   validate_bool($restart)
   validate_string($plugin)
-  validate_re($plugin,['^(.)+$'], 'Plugin name must not be empty')
 
   file { "Ensure-${plugin}-present":
     ensure  => file,

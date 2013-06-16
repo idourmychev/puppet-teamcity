@@ -1,8 +1,11 @@
 require 'spec_helper'
 
-describe 'teamcity_plugins', :type => :class do
+describe 'manage_plugin', :type => :define do
     describe 'when installing a teamcity plugin' do
-        it { should contain_exec('restart_teamcity')}
+
+      let(:title) { 'jonnyzzz.node.zip' }
+
+      it { should contain_file('Ensure-jonnyzzz.node.zip-present')}
     end
 
 end

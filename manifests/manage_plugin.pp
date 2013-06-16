@@ -1,13 +1,25 @@
-define teamcity::manage_plugin($plugin = $title, $data_directory, $restart = false) {
+define manage_plugin($data_directory, $plugin = $title, $restart = false) {
 
   validate_bool($restart)
   validate_string($plugin)
-  validate_re($plugin,['^(.)+$'], 'plugin name must not be empty')
+  validate_re($plugin,['^(.)+$'], 'Plugin name must not be empty')
 
   file { "Ensure-${plugin}-present":
     ensure  => file,
     path    => "${data_directory}/plugins/${plugin}",
     source  => "puppet:///modules/teamcity/${plugin}",
   }
+
+  if ($restart == true) {
+    exec {"restart-teamcity-to-install-${plugin}" :
+      logoutput => true,
+    }
+  } elseif ($restart == false) {
+    exec {'notify-only' :
+      logoutput => true,
+    }
+  }
+
+
 
 }

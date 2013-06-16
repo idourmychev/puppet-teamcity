@@ -1,4 +1,4 @@
-define teamcity::plugin($plugin = $title, $data_directory, $restart) {
+define teamcity::manage_plugin($plugin = $title, $data_directory, $restart = false) {
 
   validate_bool($restart)
   validate_string($plugin)
@@ -8,7 +8,6 @@ define teamcity::plugin($plugin = $title, $data_directory, $restart) {
     ensure  => file,
     path    => "${data_directory}/plugins/${plugin}",
     source  => "puppet:///modules/teamcity/${plugin}",
-    #notify  => Exec['restart_teamcity'],
   }
 
 }

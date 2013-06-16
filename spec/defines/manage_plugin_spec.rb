@@ -7,7 +7,8 @@ describe 'teamcity::manage_plugin', :type => :define do
       let(:data_directory) { 'c:/temp' }
 
       it { should contain_file('Ensure-jonnyzzz.node.zip-present').with( {
-         :path  => 'c:/temp/plugins/jonnyzzz.node.zip',})
+         :path  => 'c:/temp/plugins/jonnyzzz.node.zip',
+         :source => 'puppet:///modules/teamcity/jonnyzzz.node.zip',})
       }
 
     end

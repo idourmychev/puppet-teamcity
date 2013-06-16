@@ -12,11 +12,13 @@ define manage_plugin($data_directory, $plugin = $title, $restart = false) {
 
   if ($restart == true) {
     exec {"restart-teamcity-to-install-${plugin}" :
+      command   => 'command goes here to actually restart',
       require   => File["Ensure-${plugin}-present"],
       logoutput => true,
     }
   } elseif ($restart == false) {
     exec {'notify-about-new-plugin-installation-only' :
+      command   => 'command here to do something other than restart',
       require   => File["Ensure-${plugin}-present"],
       logoutput => true,
     }

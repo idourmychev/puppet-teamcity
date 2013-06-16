@@ -15,7 +15,7 @@ define manage_plugin($data_directory, $plugin = $title, $restart = false) {
       logoutput => true,
     }
   } elseif ($restart == false) {
-    exec {'notify-only' :
+    exec {'notify-about-new-plugin-installation-only' :
       logoutput => true,
     }
   }

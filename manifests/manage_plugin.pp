@@ -1,4 +1,4 @@
-define manage_plugin($data_directory, $plugin = $title, $restart = false) {
+define teamcity::manage_plugin($data_directory, $plugin = $title, $restart = false) {
 
   validate_re($plugin,['^(.)+$'], 'Plugin name must not be empty')
   validate_bool($restart)
@@ -23,7 +23,4 @@ define manage_plugin($data_directory, $plugin = $title, $restart = false) {
       logoutput => true,
     }
   }
-
-
-
 }

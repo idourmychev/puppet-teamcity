@@ -8,7 +8,7 @@ class teamcity {
 
   teamcity::manage_plugin {'another.plugin.zip':
     data_directory => $teamcity_data_directory,
-    restart        => true
+    restart        => true,
   }
 
 }

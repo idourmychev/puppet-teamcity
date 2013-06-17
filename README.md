@@ -30,3 +30,8 @@ Examples
         }
 
     }
+
+Plugin Storage
+--
+
+Create a files folder in the teamcity folder you forked. Upload your plugins in this folder, this will mean that the puppetmaster can use the files from the local storage

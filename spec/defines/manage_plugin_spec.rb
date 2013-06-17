@@ -19,6 +19,17 @@ describe 'teamcity::manage_plugin', :type => :define do
 
     end
 
+    describe 'when trying to install a module with no name' do
 
+      let(:title) {''}
+      let(:params ) {
+        { :data_directory => 'c:/temp',
+          :restart => false
+        }
+      }
+
+      it { expect { should contain_file('Ensure--present') }.to raise_error(Puppet::Error, /Plugin name must not be empty/) }
+
+    end
 
 end

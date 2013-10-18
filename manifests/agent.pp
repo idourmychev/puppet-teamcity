@@ -56,13 +56,6 @@ class teamcity::agent(
         logoutput => "on_failure",
     }
 
-#    file {'log_dir':
-#        ensure => directory,
-#        path => "$destination_dir/build-agent/log",
-#        owner => $username,
-#        require => File["$destination_dir"]
-#    }
-
     # make 'bin' folder executable
     file { "$destination_dir/$agent_dir/bin/":
         mode => 755,

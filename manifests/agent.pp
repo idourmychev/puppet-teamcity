@@ -11,8 +11,31 @@ class teamcity::agent(
     $teamcity_agent_mem_opts = $teamcity::params::teamcity_agent_mem_opts,
     ) inherits teamcity::params {
 
-    include users::people
-    realize( Useraccount["$username"])
+    include augeas
+
+    package {'unzip':}
+
+    package {'default-jre':}
+
+    class {'aptget::update':}
+
+    file {'agent_home':
+        ensure => directory,
+        path => "/home/$username",
+    }
+
+    group {'agent_group':
+        name => $username,
+        ensure => present,
+    }
+
+    user {'agent_user':
+        name => $username,
+        gid => [$username],
+        home => "/home/$username",
+        managehome => true,
+        require => [Group['agent_group'], File['agent_home']],
+    }
 
     wget::fetch { "teamcity-buildagent":
         source => "$download_url",
@@ -25,19 +48,32 @@ class teamcity::agent(
         require => [ Wget::Fetch["teamcity-buildagent"] ],
     }
 
-    exec { "exctract-build-agent":
+    exec { "extract-build-agent":
         command => "unzip -d $destination_dir/$agent_dir /root/$archive_name && cp $destination_dir/$agent_dir/conf/buildAgent.dist.properties $destination_dir/$agent_dir/conf/buildAgent.properties && chown $username:$username $destination_dir/$agent_dir -R",
         path => "/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin",
         creates => "$destination_dir/$agent_dir",
-        require => [ File["$destination_dir"], Useraccount["$username"] ],
+        require => [ File["$destination_dir"], User['agent_user'], Package['unzip'] ],
         logoutput => "on_failure",
     }
+
+#    file {'log_dir':
+#        ensure => directory,
+#        path => "$destination_dir/build-agent/log",
+#        owner => $username,
+#        require => File["$destination_dir"]
+#    }
 
     # make 'bin' folder executable
     file { "$destination_dir/$agent_dir/bin/":
         mode => 755,
         recurse => true,
-        require => Exec["exctract-build-agent"],
+        require => Exec["extract-build-agent"],
+    }
+
+    file { "properties.aug":
+        ensure  => "present",
+        path    => "/usr/share/augeas/lenses/dist/properties.aug",
+        content => template("${module_name}/properties.aug.erb"),
     }
 
     augeas { "buildAgent.properties":
@@ -47,7 +83,7 @@ class teamcity::agent(
             "set name $agentname",
             "set serverUrl $server_url",
         ],
-        require => Exec["exctract-build-agent"],
+        require => [Exec["extract-build-agent"], File["properties.aug"]],
     } 
 
     # init.d script
@@ -70,6 +106,7 @@ class teamcity::agent(
     # init.d autostart
     exec { "update-rc.d build-agent defaults":
         cwd => "/etc/init.d/",
+        path => '/usr/sbin/',
         creates => ["/etc/rc0.d/K20build-agent",
                     "/etc/rc1.d/K20build-agent",
                     "/etc/rc2.d/S20build-agent",
@@ -78,13 +115,13 @@ class teamcity::agent(
                     "/etc/rc5.d/S20build-agent",
                     "/etc/rc6.d/K20build-agent"
                    ],
-        require => [ File["/etc/init.d/build-agent"], File["/etc/profile.d/${priority}-teamcity.sh"] ],
+        require => [ File["/etc/init.d/build-agent"], File["/etc/profile.d/${priority}-teamcity.sh"], Package['default-jre'] ],
     }
 
     service { "build-agent":
         ensure => running,
         enable => true,
         hasstatus => false,
-        require => Exec ["update-rc.d build-agent defaults"],
+        require => [Exec ["update-rc.d build-agent defaults"], Package['default-jre']],
     }
 }

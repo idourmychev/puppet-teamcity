@@ -17,6 +17,7 @@ Please note, that you need to implement the teamcity class in your module as in 
 Examples
 --  
 
+```
     class myteamcity {
         $teamcity_data_directory = 'c:/temp'
 
@@ -30,8 +31,26 @@ Examples
         }
 
     }
+```
+Agent example. see params.pp for default values off all parameters.
+    
+```
+    class { 'teamcity::agent':
+        agentname => $hostname,
+        server_url => 'http://teamcity',
+        archive_name => 'buildAgent.zip',
+        download_url => 'http://teamcity/update/buildAgent.zip',
+        destination_dir => '/var/teamCity',
+    }
+```
+
 
 Plugin Storage
 --
 
 Create a files folder in the teamcity folder you forked. Upload your plugins in this folder, this will mean that the puppetmaster can use the files from the local storage
+
+Dependencies
+--
+The agent subclass depends on augeas. The original should work but it has an outdated stdlib dependency that needed to be upgraded for our use.
+We are currently using https://github.com/opentable/puppet-augeas/releases/tag/v0.0.2

@@ -22,6 +22,9 @@ class teamcity::agent(
     file {'agent_home':
         ensure => directory,
         path => "/home/$username",
+        group => [$username],
+        owner => [$username],
+        require => [Group['agent_group'], User['agent_user']],
     }
 
     group {'agent_group':
@@ -34,7 +37,6 @@ class teamcity::agent(
         gid => [$username],
         home => "/home/$username",
         managehome => true,
-        require => [Group['agent_group'], File['agent_home']],
     }
 
     wget::fetch { "teamcity-buildagent":

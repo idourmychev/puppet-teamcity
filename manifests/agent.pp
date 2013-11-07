@@ -17,8 +17,6 @@ class teamcity::agent(
 
     package {'default-jre':}
 
-    class {'aptget::update':}
-
     file {'agent_home':
         ensure => directory,
         path => "/home/$username",

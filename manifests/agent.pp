@@ -7,8 +7,8 @@ class teamcity::agent(
   $agent_dir = $teamcity::agent::params::agent_dir,
   $destination_dir = $teamcity::agent::params::destination_dir,
   $priority =  $teamcity::agent::params::priority,
-  $teamcity_agent_mem_opts = $teamcity::agent::params::teamcity_agent_mem_opts,
-) inherit teamcity::agent::params {
+  $teamcity_agent_mem_opts = $teamcity::agent::params::teamcity_agent_mem_opts
+) inherits teamcity::agent::params {
 
   class {'teamcity::agent::install': } ->
   class {'teamcity::agent::config': } ->

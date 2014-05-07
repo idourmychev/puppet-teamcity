@@ -1,4 +1,4 @@
-define teamcity::manage_plugin($data_directory, $plugin = $title, $restart = false) {
+define teamcity::server::manage_plugin($data_directory, $plugin = $title, $restart = false) {
 
   validate_re($plugin,['^(.)+$'], 'Plugin name must not be empty')
   validate_re($data_directory,['^(.)+$'], 'Data directory must not be empty')

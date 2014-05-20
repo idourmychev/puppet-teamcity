@@ -10,18 +10,6 @@ class teamcity::agent::install {
         ensure => 'installed'
       } ->
 
-      group {'agent_group':
-        name => $teamcity::agent::username,
-        ensure => present
-      } ->
-
-      user {'agent_user':
-        name => $teamcity::agent::username,
-        gid => [$teamcity::agent::username],
-        home => "/home/$username",
-        managehome => true
-      } ->
-
       file {'agent_home':
         ensure => directory,
         path => "/home/$username",
@@ -53,7 +41,15 @@ class teamcity::agent::install {
 
     }
     'windows': {
-      notify('Nothing for windows just yet')
+
+      file {'c:\temp':
+        ensure => 'directory'
+      } ->
+
+      download_file { 'TeamCity Windows Installer':
+        url                   => 'http://10.10.21.42/update/agentInstaller.exe',
+        destination_directory => 'c:\temp'
+      }
     }
     default: {
       fail("This module is only supported by debian and windows based operating systems")

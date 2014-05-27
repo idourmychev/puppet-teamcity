@@ -1,3 +1,0 @@
-class teamcity::sever::params {
-
-}

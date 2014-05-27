@@ -10,7 +10,7 @@ class teamcity::agent(
   $teamcity_agent_mem_opts = $teamcity::agent::params::teamcity_agent_mem_opts
 ) inherits teamcity::agent::params {
 
-  class {'teamcity::agent::user_mgmt': } ->
+  #class {'teamcity::user_mgmt': } ->
   class {'teamcity::agent::install': } ->
   class {'teamcity::agent::config': } ->
   class {'teamcity::agent::service': } ->

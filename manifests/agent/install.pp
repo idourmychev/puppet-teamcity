@@ -47,8 +47,22 @@ class teamcity::agent::install {
       } ->
 
       download_file { 'TeamCity Windows Installer':
-        url                   => 'http://10.10.21.42/update/agentInstaller.exe',
+        url                   => "${teamcity::agent::download_url}",
         destination_directory => 'c:\temp'
+      } ->
+
+      exec { "extract-build-agent":
+        command   => "unzip c:/temp/${teamcity::agent::archive_name} -d ${teamcity::agent::destination_dir}",
+        creates   => "${teamcity::agent::destination_dir}",
+        logoutput => "on_failure",
+        provider  => 'powershell'
+      } ->
+
+      exec {'Install Build Agent':
+        command  => '.\service.install.bat',
+        onlyif   => 'if(Get-Service TCBuildAgent) { exit 1 } else { exit 0 }',
+        cwd      => "${teamcity::agent::destination_dir}\bin",
+        provider => 'powershell'
       }
     }
     default: {

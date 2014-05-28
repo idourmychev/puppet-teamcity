@@ -7,4 +7,3 @@ description   'Install and manage the installation of agents and servers for Tea
 project_page  'https://github.com/opentable/puppet-teamcity'
 license       'MIT'
 dependency    'puppetlabs/stdlib', '>= 3.2.0'
-dependency    'puppetlabs/augeas', '0.0.2'

@@ -12,13 +12,13 @@ class teamcity::agent::install {
 
       file {'agent_home':
         ensure => directory,
-        path => "/home/$username",
+        path => "/home/${teamcity::agent::username}",
         group => [$teamcity::agent::username],
         owner => [$teamcity::agent::username]
       } ->
 
       wget::fetch { "teamcity-buildagent":
-        source => "${$teamcity::agent::download_url}",
+        source => "${teamcity::agent::server_url}/update/${teamcity::agent::archive_name}",
         destination => "/root/${$teamcity::agent::archive_name}",
         timeout => 0,
       }
@@ -47,7 +47,7 @@ class teamcity::agent::install {
       } ->
 
       download_file { 'TeamCity Windows Installer':
-        url                   => "${teamcity::agent::download_url}",
+        url                   => "${teamcity::agent::server_url}/update/${teamcity::agent::archive_name}",
         destination_directory => 'c:\temp'
       } ->
 

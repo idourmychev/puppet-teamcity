@@ -50,7 +50,7 @@ class teamcity::agent::install {
 
       download_file { 'TeamCity Windows Installer':
         url                   => "${teamcity::agent::server_url}/update/${teamcity::agent::archive_name}",
-        destination_directory => 'c:\temp'
+        destination_directory => 'c:\temp',
         require               => File['c:\temp']
       } ->
 

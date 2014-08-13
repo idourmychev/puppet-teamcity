@@ -42,13 +42,16 @@ class teamcity::agent::install {
     }
     'windows': {
 
-      file {'c:\temp':
-        ensure => 'directory'
-      } ->
+      if ! defined(File['c:\temp']) {
+        file {'c:\temp':
+          ensure => 'directory'
+        }
+      }
 
       download_file { 'TeamCity Windows Installer':
         url                   => "${teamcity::agent::server_url}/update/${teamcity::agent::archive_name}",
         destination_directory => 'c:\temp'
+        require               => File['c:\temp']
       } ->
 
       exec { "extract-build-agent":

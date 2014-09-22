@@ -55,7 +55,7 @@ class teamcity::agent::install {
       } ->
 
       exec { "extract-build-agent":
-        command   => "unzip c:/temp/${teamcity::agent::archive_name} -d ${teamcity::agent::destination_dir}",
+        command   => "c:/program files/7-zip/7z.exe x -y -o${teamcity::agent::destination_dir} c:/temp/${teamcity::agent::archive_name}",
         creates   => "${teamcity::agent::destination_dir}",
         logoutput => "on_failure",
         provider  => 'powershell'

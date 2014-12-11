@@ -44,7 +44,7 @@ $teamcity_agent_mem_opts = $teamcity::agent::teamcity_agent_mem_opts
     'windows': {
       service { "TCBuildAgent":
         ensure => running,
-        enable => false
+        enable => true
       }
     }
   }

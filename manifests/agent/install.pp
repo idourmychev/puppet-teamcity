@@ -64,7 +64,7 @@ class teamcity::agent::install {
       exec {'Install Build Agent':
         command  => '.\service.install.bat',
         onlyif   => 'if(Get-Service TCBuildAgent) { exit 1 } else { exit 0 }',
-        cwd      => "${teamcity::agent::destination_dir}\bin",
+        cwd      => "${teamcity::agent::destination_dir}\\bin",
         provider => 'powershell'
       }
     }

@@ -3,18 +3,20 @@ require 'spec_helper'
 describe 'teamcity::agent', :type => :class do
 
   let(:params) {{
-      :agentname       => 'test-agent-1',
-      :username        => 'teamcity',
-      :server_url      => 'http://10.10.21.42',
-      :archive_name    => 'buildAgent.zip',
-      :agent_dir       => 'build-agent',
-      :priority        => '20'
+      :agentname    => 'test-agent-1',
+      :username     => 'teamcity',
+      :server_url   => 'http://10.10.21.42',
+      :archive_name => 'buildAgent.zip',
+      :agent_dir    => 'build-agent',
+      :priority     => '20'
   }}
 
   context 'the ordering of the module should be' do
 
     let(:facts) { {
-        :osfamily  => 'Debian'
+        :osfamily => 'Debian',
+        :path     => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        :kernel   => 'Linux',
     } }
 
     it { should compile.with_all_deps }
@@ -29,7 +31,8 @@ describe 'teamcity::agent', :type => :class do
   context 'using params defaults the install class (on ubuntu)' do
 
     let(:facts) { {
-        :osfamily  => 'Debian'
+        :osfamily => 'Debian',
+        :kernel   => 'Linux',
     } }
 
     it { should contain_class('teamcity::agent::install') }
@@ -63,7 +66,7 @@ describe 'teamcity::agent', :type => :class do
     }
 
     it { should contain_file('/var/tainted/build-agent/bin/')
-      .with_mode('755')
+      .with_mode('0755')
       .with_recurse('true')
     }
   end
@@ -71,7 +74,8 @@ describe 'teamcity::agent', :type => :class do
   context 'using params defaults the config class (on ubuntu)' do
 
     let(:facts) { {
-        :osfamily  => 'Debian'
+        :osfamily => 'Debian',
+        :kernel   => 'Linux',
     } }
 
     it { should contain_class('teamcity::agent::config') }
@@ -105,7 +109,7 @@ describe 'teamcity::agent', :type => :class do
   context 'using params defaults the config class (on windows)' do
 
     let(:facts) { {
-        :osfamily  => 'Windows'
+        :osfamily => 'Windows'
     } }
 
     it { should contain_class('teamcity::agent::config') }
@@ -139,7 +143,8 @@ describe 'teamcity::agent', :type => :class do
   context 'using params defaults the service class (on ubuntu)' do
 
     let(:facts) { {
-        :osfamily  => 'Debian'
+        :osfamily => 'Debian',
+        :kernel   => 'Linux',
     } }
 
 
@@ -156,7 +161,7 @@ describe 'teamcity::agent', :type => :class do
   context 'using params defaults the service class (on windows)' do
 
     let(:facts) { {
-        :osfamily  => 'Windows'
+        :osfamily => 'Windows'
     } }
 
     it { should contain_class('teamcity::agent::service') }

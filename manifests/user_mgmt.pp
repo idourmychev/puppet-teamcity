@@ -1,14 +1,14 @@
 class teamcity::user_mgmt {
   if downcase($::osfamily) == 'debian' {
-    group {'agent_group':
-      name => $teamcity::agent::username,
-      ensure => present
+    group { 'agent_group':
+      ensure => present,
+      name   => $teamcity::agent::username,
     } ->
 
-    user {'agent_user':
+    user { 'agent_user':
       name => $teamcity::agent::username,
-      gid => [$teamcity::agent::username],
-      home => "/home/$username"
+      gid  => [ $teamcity::agent::username ],
+      home => "/home/${teamcity::agent::username}",
     }
   }
 }

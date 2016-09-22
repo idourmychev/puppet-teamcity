@@ -139,12 +139,11 @@ describe 'teamcity::agent', :type => :class do
 
     it { should contain_class('teamcity::agent::service') }
 
-    it do
-      should contain_service('build-agent').
-        with_enable('true').
-        with_ensure('running').
-        with_hasstatus('false')
-    end
+    it { should contain_service('build-agent').
+      with_enable('true').
+      with_ensure('running').
+      with_hasstatus('false')
+    }
   end
 
   context 'using params defaults the service class (on windows)' do

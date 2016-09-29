@@ -63,13 +63,13 @@ describe 'teamcity::agent', :type => :class do
     end
 
     it do
+      # rubocop:disable LineLength
       should contain_exec('extract-build-agent') \
-        # rubocop:disable LineLength
         .with_command('unzip -d /var/tainted/build-agent /root/buildAgent.zip && cp /var/tainted/build-agent/conf/buildAgent.dist.properties /var/tainted/build-agent/conf/buildAgent.properties && chown teamcity:teamcity /var/tainted/build-agent -R') \
-        # rubocop:enable LineLength
         .with_path('/usr/bin:/usr/sbin:/bin:/usr/local/bin:/opt/local/bin') \
         .with_creates('/var/tainted/build-agent') \
         .with_logoutput('on_failure')
+      # rubocop:enable LineLength
     end
 
     it do

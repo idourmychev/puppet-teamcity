@@ -1,0 +1,8 @@
+# Ignore cops incompatible with 1.8.7
+Style/HashSyntax:
+  Exclude:
+    - 'Gemfile'
+    - 'spec/classes/agent_spec.rb'
+
+Metrics/LineLength:
+  Max: 128

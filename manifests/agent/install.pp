@@ -41,21 +41,15 @@ class teamcity::agent::install {
 
     }
     'windows': {
-
-      if ! defined(File['c:\temp']) {
-        file { 'c:\temp':
-          ensure => 'directory',
-        }
-      }
+      validate_re($teamcity::agent::temp_dir, '.+')
 
       download_file { 'TeamCity Windows Installer':
         url                   => "${teamcity::agent::server_url}/update/${teamcity::agent::archive_name}",
-        destination_directory => 'c:\temp',
-        require               => File['c:\temp'],
+        destination_directory => $teamcity::agent::temp_dir,
       } ->
 
       exec { 'extract-build-agent':
-        command   => "c:/program` files/7-zip/7z.exe x -y -o${teamcity::agent::destination_dir} c:/temp/${teamcity::agent::archive_name}",
+        command   => "c:/program` files/7-zip/7z.exe x -y -o${teamcity::agent::destination_dir} ${teamcity::agent::temp_dir}/${teamcity::agent::archive_name}",
         creates   => $teamcity::agent::destination_dir,
         logoutput => 'on_failure',
         provider  => 'powershell',

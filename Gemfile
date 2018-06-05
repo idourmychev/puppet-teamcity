@@ -8,7 +8,7 @@ gem 'rspec', '2.13.0'
 gem 'rspec-core', '2.13.1'
 gem 'rspec-expectations', '2.13.0'
 gem 'rspec-mocks', '2.13.1'
-gem 'puppet', '3.2.1'
+gem 'puppet', '>= 3.2.2',  '< 4'
 gem 'rspec-puppet', '0.1.6'
 gem 'puppetlabs_spec_helper', '0.4.1'
 
